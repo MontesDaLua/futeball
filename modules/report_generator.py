@@ -1,14 +1,25 @@
+"""
+Class ReportGenerator
+"""
 import matplotlib.pyplot as plt
 from fpdf import FPDF
-import pandas as pd
 
 class ReportGenerator:
+    """
+    Report Generator
+    """
     def __init__(self, player_data, squad_map, match_info):
+        """
+        Constructor
+        """
         self.data = player_data
         self.squad = squad_map
         self.info = match_info
 
     def create_speed_plot(self, player_id, output_path):
+        """
+        Plot speed
+        """
         speeds = self.data[str(player_id)]["speeds"]
         plt.figure(figsize=(10, 4))
         plt.plot(speeds, color='#007AFF')
@@ -20,6 +31,9 @@ class ReportGenerator:
         plt.close()
 
     def generate_pdf(self, output_filename):
+        """
+        Generate pdf file
+        """
         pdf = FPDF()
         pdf.add_page()
         pdf.set_font("Arial", 'B', 16)

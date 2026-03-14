@@ -4,6 +4,7 @@ PYTHON := $(VENV)/bin/python
 PIP := $(VENV)/bin/pip
 PYLINT := $(VENV)/bin/pylint
 MODULES_DIR := modules
+TEST_DIR := modules/tests
 MAIN_SCRIPT := main.py
 
 
@@ -20,11 +21,12 @@ install: venv
 
 # Code Quality Analysis
 lint: install
-	@echo "Running Pylint on modules and main script..."
-	$(PYLINT) $(MAIN_SCRIPT) $(MODULES_DIR)/*.py --disable=C0114,C0115,C0116
+	@echo "Running Pylint on modules, tests and main script..."
+	$(PYLINT) $(MAIN_SCRIPT) $(MODULES_DIR)/*.py $(TEST_DIR)/*.py
+
 
 # Run Unit Tests
-test: install 
+test: install
 	@echo "Running unit tests..."
 	$(PYTHON) -m unittest discover -s modules/tests
 
@@ -38,3 +40,6 @@ clean:
 	rm -f *.png
 	rm -f *.json
 	rm -f *.pdf
+
+
+.PHONY: venv install lint test clean

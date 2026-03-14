@@ -1,8 +1,17 @@
+"""
+Class FieldAnalyst
+"""
 import cv2
 import numpy as np
 
 class FieldAnalyst:
+    """
+    Field Analyst
+    """
     def __init__(self, pitch_length, pitch_width):
+        """
+        Constructor
+        """
         self.pitch_length = pitch_length
         self.pitch_width = pitch_width
         self.homography_matrix = None
@@ -22,6 +31,9 @@ class FieldAnalyst:
         self.homography_matrix, _ = cv2.findHomography(np.array(src_points), dst_points)
 
     def pixel_to_meters(self, x, y):
+        """
+        convert pixels into meters
+        """
         if self.homography_matrix is None:
             return x, y
 

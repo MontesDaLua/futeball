@@ -1,0 +1,11 @@
+[MASTER]
+extension-pkg-whitelist=cv2
+ignored-modules=cv2
+init-hook="import sys; sys.path.append('venv/lib/python3.12/site-packages'); sys.path.append('.')"
+
+#[REPORTS]
+#fail-under=10.0
+
+[DESIGN]
+# For video analysis
+#max-locals=25

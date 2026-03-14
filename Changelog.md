@@ -12,7 +12,18 @@
     * data
       * video
         * full video (SINT-ALV)
-
   * changed
     * global prompt
     * Makefile prompt
+* 20260314-1
+  * added
+    * pylintrc
+  * changed
+    * ammend pylint errors
+      * main.py
+      * match_analyzer.py
+      * report_generator.py
+      * tests
+        * test_field_analyst.py
+        * test_match_analyzer.py
+        * test_player_tracker.py
