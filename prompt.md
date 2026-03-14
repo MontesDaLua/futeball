@@ -51,7 +51,7 @@
   os modulos deve estar numa subdirectoria
   ```
 
-# 20260314-1529 REsumo
+# 20260314-1529 new Code Generator
   ```
     ## Contexto
     Gera um sistema de análise de performance de futebol profissional em Python, utilizando Programação Orientada a Objetos (OOP), desenhado para correr localmente num Mac M1 com aceleração Metal (MPS).
@@ -92,4 +92,26 @@
    os modulos deve estar numa subdirectoria
    Não deve haver valores hardcoded . Devem ser atributos os argumentos das instancias das classe
    o programa principal  deve aceitar os argumentos pela CLI
+  ```
+
+# 20260314-1556 new Makefile
+
+  ```
+    gera uma Makefile para python para:
+    * criar o ambiente virtual
+    * instalar os pacotes de pip
+    * limpar o ambiente virtual
+    * usar pylint para geração de qualidade de codigo
+
+    não cries a opção help
+    responde em ingles
+  ```
+
+# 20260314-1602 Unit test
+  ```
+  * create the unittest for each class method
+  * unittest shoul be in the class directory 
+  * they should test
+    * sucess
+    * failure errors
   ```

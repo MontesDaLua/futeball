@@ -4,5 +4,11 @@
   * Added Makefile and .gitignore
   * Added changelog
 * 20260314
-  * added TODO
-  * global prompt 
+  * add
+    * TODO
+    * README.md
+    * pylint to makefile
+    * unittest to each method in each class
+  * changed
+    * global prompt
+    * Makefile prompt 

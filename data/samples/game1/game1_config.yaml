@@ -1,0 +1,18 @@
+match_info:
+  match_id: "2026_SLB_FCP"
+  teams: "SL Benfica vs FC Porto"
+  stadium: "Estádio da Luz"
+
+pitch:
+  length: 105.0
+  width: 68.0
+
+analysis:
+  sample_rate: 0.2
+  min_confidence: 0.35
+  model_size: "yolov8n"
+
+squad:
+  "1": "Otamendi"
+  "2": "Di Maria"
+  "3": "Kokcu"

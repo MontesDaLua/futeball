@@ -1,4 +1,3 @@
-* add pylint to makefile
-* add unittest to each method in each class
+* create git remote
 * video
   * full video
