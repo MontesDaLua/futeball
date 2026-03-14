@@ -9,6 +9,10 @@
     * README.md
     * pylint to makefile
     * unittest to each method in each class
+    * data
+      * video
+        * full video (SINT-ALV)
+
   * changed
     * global prompt
-    * Makefile prompt 
+    * Makefile prompt
