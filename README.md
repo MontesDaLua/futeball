@@ -21,3 +21,11 @@ https://github.com/yt-dlp/yt-dlp/wiki/Installation
 ```
 
 git config --global --unset credential.helper manager
+
+# Run
+
+## Teste
+```bash
+source ./venv/bin/activate
+python3 main.py
+```

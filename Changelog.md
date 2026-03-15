@@ -27,3 +27,5 @@
         * test_field_analyst.py
         * test_match_analyzer.py
         * test_player_tracker.py
+* 20260314-2
+  * test if arguments are valid (yaml and video )
