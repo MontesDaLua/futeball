@@ -6,7 +6,7 @@ import os
 import sys
 from pathlib import Path
 import yaml
-import cv2
+#import cv2
 from modules.match_analyzer import MatchAnalyzer
 from modules.report_generator import ReportGenerator
 
@@ -113,9 +113,9 @@ def validate_video(video_path):
     cap.release()
     return True
 
-def main():
+def parse_arguments():
     """
-    main script
+    return cli arguments
     """
     parser = argparse.ArgumentParser(description="Football Performance AI ")
     parser.add_argument("--video", type=str, required=True, help="Caminho para o ficheiro de vídeo")
@@ -127,22 +127,24 @@ def main():
     ## Paths
     if not os.path.exists(args.video):
         print(f"Erro: O vídeo '{args.video}' não foi encontrado.")
-        sys.exit(1)
+        sys.exit(0)
 
     if not os.path.exists(args.config):
         print(f"Erro: O ficheiro de configuração '{args.config}' não existe.")
-        sys.exit(1)
+        sys.exit(0)
     # Validação de saída
     validate_output_path(args.output)
 
     print(f"✅ Tudo pronto! O relatório será guardado em: {args.output}")
-    ## file type
-    config_data = validate_yaml(args.config)
-    validate_video(args.video)
+    return ( args.video, args.config, args.output)
 
+def process(video, config, output):
+    """
+    actual p+rocessing
+    """
     # 1. Análise
     analyzer = MatchAnalyzer(config_data)
-    analyzer.process_video(args.video)
+    analyzer.process_video(video)
     analyzer.save_session("session_data.json")
 
     # 2. Relatório
@@ -151,9 +153,19 @@ def main():
         analyzer.config['squad'],
         analyzer.config['match_info']
     )
-    reporter.generate_pdf(args.output)
+    reporter.generate_pdf(output)
 
-    print(f"Sucesso! Relatório gerado em: {args.output}")
+    print(f"Sucesso! Relatório gerado em: {output}")
+
+def main():
+    """
+    main script
+    """
+    ( video, config, output) = parse_arguments()
+    ## file type
+    config_data = validate_yaml(config)
+    #validate_video(video)
+    #process(video, config, output)
 
 
 if __name__ == "__main__":

@@ -1,3 +1,4 @@
 venv/
+tmp/
 __pycache__/
 data/samples/game1/video/

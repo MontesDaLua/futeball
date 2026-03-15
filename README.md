@@ -20,12 +20,17 @@ https://github.com/yt-dlp/yt-dlp/wiki/Installation
  # start game in video 9'15''
 ```
 
-git config --global --unset credential.helper manager
 
 # Run
 
 ## Teste
 ```bash
+date
 source ./venv/bin/activate
-python3 main.py
+export DT=20260215
+python3 main.py \
+  --video=data/samples/game1/video/${DT}/SINT-ALV.mp4 \
+  --config=data/samples/game1/config/${DT}/SINT-ALV.yml \
+  --output=tmp/${DT}-SINT-ALV.pdf
+date
 ```
