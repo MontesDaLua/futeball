@@ -1,6 +1,5 @@
-* template report in multiple languages
 
-* generate speed reports image in a temporary folder and remove the images after the report run
+* template report in multiple languages
 * include in game configuration
   * visitor
   * home team
@@ -10,6 +9,9 @@
   * report generator
 * report generator should have:
     * optional video generator based on the frames that where analised
+    * players that where not identified
+    * para cada jogador
+      * quais as primeiras 100 frames que identificaram os valores atribuidos
 * report generator should have
   * optional watter mark
   * summary from the video analysis
