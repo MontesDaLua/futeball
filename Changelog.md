@@ -29,3 +29,7 @@
         * test_player_tracker.py
 * 20260314-2
   * test if arguments are valid (yaml and video )
+
+* 20260316
+  * generate samples for demo purpose
+  * first run with success 

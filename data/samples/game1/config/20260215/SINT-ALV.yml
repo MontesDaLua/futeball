@@ -8,7 +8,7 @@ pitch:
   width: 68.0
 
 analysis:
-  sample_rate: 0.2
+  sample_rate: 0.2 # % frames do analyse 
   min_confidence: 0.35
   model_size: "yolov8n"
 

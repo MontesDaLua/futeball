@@ -143,7 +143,7 @@ def process(video, config, output):
     actual p+rocessing
     """
     # 1. Análise
-    analyzer = MatchAnalyzer(config_data)
+    analyzer = MatchAnalyzer(config)
     analyzer.process_video(video)
     analyzer.save_session("session_data.json")
 
@@ -165,7 +165,7 @@ def main():
     ## file type
     config_data = validate_yaml(config)
     validate_video(video)
-    #process(video, config, output)
+    process(video, config, output)
 
 
 if __name__ == "__main__":

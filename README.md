@@ -23,13 +23,25 @@ https://github.com/yt-dlp/yt-dlp/wiki/Installation
 
 # Run
 
+## make samples
+```bash
+ffmpeg -i  data/samples/game1/video/20260215/SINT-ALV-full.mp4  \
+       -ss 00:09:14 \
+       -t 00:01:00 \
+       -c copy  data/samples/game1/video/20260215/SINT-ALV-min1.mp4
+ffmpeg -i  data/samples/game1/video/20260215/SINT-ALV-full.mp4  \
+       -ss 00:09:14 \
+       -t 00:05:00 \
+       -c copy  data/samples/game1/video/20260215/SINT-ALV-min5.mp4
+```
+
 ## Teste
 ```bash
 date
 source ./venv/bin/activate
 export DT=20260215
 python3 main.py \
-  --video=data/samples/game1/video/${DT}/SINT-ALV.mp4 \
+  --video=data/samples/game1/video/${DT}/SINT-ALV-min1.mp4 \
   --config=data/samples/game1/config/${DT}/SINT-ALV.yml \
   --output=tmp/${DT}-SINT-ALV.pdf
 date
