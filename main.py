@@ -6,7 +6,7 @@ import os
 import sys
 from pathlib import Path
 import yaml
-#import cv2
+import cv2
 from modules.match_analyzer import MatchAnalyzer
 from modules.report_generator import ReportGenerator
 
@@ -164,7 +164,7 @@ def main():
     ( video, config, output) = parse_arguments()
     ## file type
     config_data = validate_yaml(config)
-    #validate_video(video)
+    validate_video(video)
     #process(video, config, output)
 
 
