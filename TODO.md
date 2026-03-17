@@ -1,12 +1,16 @@
 
 * template report in multiple languages
+* include summary in the report
+  * game data
+  * analisys data
+    * hardware
+    * performance
+    * frames analised versus video length  
 * include in game configuration
+  * date
   * visitor
   * home team
   * players that bellow to home or visitors team
-* split the game analysis in 2 scripts
-  * video processing
-  * report generator
 * report generator should have:
     * optional video generator based on the frames that where analised
     * players that where not identified

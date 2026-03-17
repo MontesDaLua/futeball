@@ -32,4 +32,12 @@
 
 * 20260316
   * generate samples for demo purpose
-  * first run with success 
+  * first run with success
+
+* 20260316-1
+  * generate speed reports image in a temporary folder and remove the images after the report run
+
+* 20260317-1
+  * split the game analysis in 2 scripts
+    * video processing
+    * report generator

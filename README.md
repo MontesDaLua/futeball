@@ -46,3 +46,17 @@ python3 main.py \
   --output=tmp/${DT}-SINT-ALV.pdf
 date
 ```
+
+
+## Teste com separacao scripts
+```bash
+export game_name=SINT-ALV
+export video_path=data/samples/game1/video/20260215/${game_name}-min1.mp4
+export config_path=data/samples/game1/config/20260215/${game_name}.yml
+export data_path=data/samples/game1/analisys/20260215/${game_name}-data.json
+date
+python run_video_processing.py --video ${video_path} --config  ${config_path} --output ${data_path}
+date
+python report_generator.py --input ${data_path} --config ${config_path}  --output tmp/${game_name}-Relatorio.pdf
+date
+```

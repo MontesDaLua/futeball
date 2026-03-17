@@ -1,6 +1,6 @@
 venv/
 tmp/
 __pycache__/
-data/samples/game1/video/
+data/samples/
 session_data.json
 yolov8n.pt
