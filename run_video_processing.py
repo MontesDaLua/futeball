@@ -19,9 +19,14 @@ def validate_inputs(video_path, config_path):
 
 def main():
     parser = argparse.ArgumentParser(description="Etapa 1: Processamento de Vídeo e Tracking")
-    parser.add_argument("--video", type=str, required=True, help="Caminho do vídeo .mp4")
-    parser.add_argument("--config", type=str, required=True, help="Caminho do ficheiro .yaml")
-    parser.add_argument("--output", type=str, default="session_data.json", help="Nome do ficheiro JSON de saída")
+    parser.add_argument("--video", type=str,
+        required=True, help="Caminho do vídeo .mp4")
+    parser.add_argument("--config", type=str, required=True,
+            help="Caminho do ficheiro .yaml")
+    parser.add_argument("--output", type=str, required=True,
+            help="Nome do ficheiro JSON de saída")
+    parser.add_argument("--save-video", type=str, required=False,
+        help="Nome do vídeo anotado (ex: output.mp4). Se omitido, não gera vídeo.")
 
     args = parser.parse_args()
 
@@ -35,8 +40,9 @@ def main():
         analyzer = MatchAnalyzer(args.config)
 
         # 3. Executar a análise de frames
-        analyzer.process_video(args.video)
-
+        #analyzer.process_video(args.video)
+        analyzer.process_video(args.video,
+            save_annotated_path=args.save_video)
         # 4. Guardar a sessão num ficheiro JSON
         # Este ficheiro será o input para o script de relatórios
         analyzer.save_session(args.output)

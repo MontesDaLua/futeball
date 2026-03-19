@@ -1,14 +1,14 @@
 match_info:
-  match_id: "2026_SLB_FCP"
-  teams: "SL Benfica vs FC Porto"
-  stadium: "Estádio da Luz"
+  match_id: "2026_SINT-ELV
+  teams: "Sintrense vs ELvas"
+  stadium: "Estádio do Sintrense"
 
 pitch:
   length: 105.0
   width: 68.0
 
 analysis:
-  sample_rate: 0.2 # % frames do analyse 
+  sample_rate: 0.2 # % frames do analyse
   min_confidence: 0.35
   model_size: "yolov8n"
 
