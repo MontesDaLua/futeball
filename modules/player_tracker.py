@@ -20,6 +20,20 @@ class PlayerTracker:
 
     def track_frame(self, frame):
         """
+        Rastreio de frames filtrando por pessoas (0) e bola (32)
+        """
+        results = self.model.track(
+            frame,
+            persist=True,
+            device=self.device,
+            conf=self.min_confidence,
+            classes=[0, 32],  # Adicionado filtro de classes
+            verbose=False
+        )
+        return results[0]
+        
+    def track_frame_old(self, frame):
+        """
         specific frame track
         """
         results = self.model.track(frame,

@@ -55,9 +55,10 @@ export game_name=SINT-ALV
 
 export video_path=data/samples/game1/video/20260215/${game_name}-min1.mp4
 export config_path=data/samples/game1/config/20260215/${game_name}.yml
-export game_data_path=data/samples/game1/analisys/20260215/${game_name}-data.json
+export data_path=data/samples/game1/analisys/20260215/${game_name}-data.json
 
 export proc_config_file=data/frame_analysis/simple.yml
+export data_config_file=data/samples/game1/config/20260215/SINT-ALV.yml
 
 export video_save_dir=tmp
 
@@ -65,9 +66,10 @@ date
 python run_video_processing.py \
   --video ${video_path} \
   --proc_config ${proc_config_file} \
-  --game_data ${game_data_path} \
+  --game_data ${data_config_file} \
   --output ${data_path} \
-  --save-video ${video_save_dir}/SAVE_VIDEO.mp4
+  --save-video ${video_save_dir}/SAVE_VIDEO.mp4 \
+  --gallery tmp/lixo
 date
 python report_generator.py \
   --input ${data_path} \

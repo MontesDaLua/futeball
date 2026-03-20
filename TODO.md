@@ -31,6 +31,4 @@
     * arbitro   
 
 # video analysis
-  * include ball position
-  * include referee position
   * include messages with start/end and duration of the video analysis

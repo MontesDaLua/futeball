@@ -49,3 +49,10 @@
   * split the config in 2 DISTINCT FILES \
     * game data
     * video processor parameters
+
+* 20260319-2
+  * video analysis
+    * include ball position
+    * include referee position
+    * imagem de todos os ids de jogadores encontrados numa directoria especifica
+    * lista de ids a ignorar na configuração de jogo

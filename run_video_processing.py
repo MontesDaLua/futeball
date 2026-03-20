@@ -30,7 +30,8 @@ def main():
             help="Nome do ficheiro JSON de saída")
     parser.add_argument("--save-video", type=str, required=False,
         help="Nome do vídeo anotado (ex: output.mp4). Se omitido, não gera vídeo.")
-
+    parser.add_argument("--gallery", type=str, required=False, default=None,
+                        help="Diretoria para salvar crops de IDs detetados (opcional)")
 
     parser.add_argument("--proc_config", type=str, required=True,
         help="processor_config.yaml")
@@ -51,8 +52,11 @@ def main():
                                  game_data_path=args.game_data)
         # 3. Executar a análise de frames
         #analyzer.process_video(args.video)
-        analyzer.process_video(args.video,
-            save_annotated_path=args.save_video)
+        analyzer.process_video(
+            args.video,
+            save_annotated_path=args.save_video,
+            gallery_dir=args.gallery
+        )
         # 4. Guardar a sessão num ficheiro JSON
         # Este ficheiro será o input para o script de relatórios
         analyzer.save_session(args.output)
