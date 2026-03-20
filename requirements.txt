@@ -7,3 +7,5 @@ numpy
 fpdf2
 tqdm
 pandas
+streamlit
+Pillow

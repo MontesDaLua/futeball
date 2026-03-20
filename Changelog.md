@@ -68,4 +68,21 @@
     * fim lista
       * os jogadores identificados
       * os jogadores nao identificados
-    * na galeria das imagens dos jogadores nao identificados, por cada um inclui tambem a totalida da frame em que foi detectado 
+    * na galeria das imagens dos jogadores nao identificados, por cada um inclui tambem a totalida da frame em que foi detectado
+
+* 20260319-4
+  # video_app
+    gera uma aplicação iteractiva em python que :
+      - permita a partir do video gerado , para cada id nao identificado atribuir um nome.
+      - deve ler os argumentos com argparse
+      - acrescenta a opção de :
+        - salvar yaml
+        - remover um jogador da lista de jogadores conhecidos
+        - sair da aplicação
+        - Identificar o arbitro
+        - adicionar esse jogador á lista de exclusoes
+        - o ficheiro de yaml deve terum num numero sequencial apos o processamento
+        - deve ser possivel adicionar um id a lista a ignorar
+        - deve ser possivel adicionar um id a um jogador ja identificado
+        - em vez de carregar todos os nao identificados deve carregar em grupos de 50
+        - term interface para ir para o proximo ou o anterior grupo de 50

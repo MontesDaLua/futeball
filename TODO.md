@@ -29,7 +29,3 @@
       * visitor
       * home team
     * arbitro   
-
-# video analysis
-  * include messages with start/end and duration of the video analysis
-  

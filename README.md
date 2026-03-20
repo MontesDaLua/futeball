@@ -61,6 +61,7 @@ export proc_config_file=data/frame_analysis/simple.yml
 export data_config_file=data/samples/game1/config/20260215/SINT-ALV.yml
 
 export video_save_dir=tmp
+export gallery_dir=tmp/lixo
 
 date
 python run_video_processing.py \
@@ -69,8 +70,16 @@ python run_video_processing.py \
   --game_data ${data_config_file} \
   --output ${data_path} \
   --save-video ${video_save_dir}/SAVE_VIDEO.mp4 \
-  --gallery tmp/lixo
+  --gallery ${gallery_dir}
 date
+
+streamlit run id_manager_app.py -- \
+    --game_data ${data_config_file} \
+    --gallery ${gallery_dir}
+
+
+
+
 python report_generator.py \
   --input ${data_path} \
   --config ${config_path}  \
