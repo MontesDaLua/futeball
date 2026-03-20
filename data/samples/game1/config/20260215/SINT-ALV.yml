@@ -12,10 +12,17 @@ pitch:
 
 # Identificação (Mapeamento de IDs do Tracker para Nomes)
 squad:
+  # Numeros aleatorios
   "9999999": "João Silva (GR)"
+  "referee_id": "991234567"  # ID que o tracker atribuiu ao árbitro
+  # Valores reais
   # "5": "Carlos Santos"
   # "10": "Ricardo Quaresma"
-  "referee_id": "991234567"  # ID que o tracker atribuiu ao árbitro
+
+same_as:
+  "9999999": "João Silva (GR)"
+  "9999": [25, 32]  # O jogador que era o 10, passou a ser o 25 e o 32 em certos momentos
+  # Valores reais
 
 # Lista de IDs capturados pelo tracker que devem ser ignorados
 ignore_ids:
@@ -28,9 +35,9 @@ ignore_ids:
   - 243
   - 255
   - 269
-  - 288 
+  - 288
   - 305
-  - 318 
+  - 318
   - 333
   - 346
   - 378
@@ -48,6 +55,6 @@ ignore_ids:
   - 900
   - 902
   - 917
-  - 982 
+  - 982
   - 991
-  - 1003 
+  - 1003

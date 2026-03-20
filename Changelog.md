@@ -56,3 +56,16 @@
     * include referee position
     * imagem de todos os ids de jogadores encontrados numa directoria especifica
     * lista de ids a ignorar na configuração de jogo
+* 20260319-3
+  * video analysis
+    * possibilidade de considerar 2 ou mais ids como o mesmo
+    * Numero de frames Totais
+    * Numero de frames analisdas
+    * timestampo inicio da analise
+    * timestampo fim da analise
+    * duração da analise
+    * numero de analises por segundo
+    * fim lista
+      * os jogadores identificados
+      * os jogadores nao identificados
+    * na galeria das imagens dos jogadores nao identificados, por cada um inclui tambem a totalida da frame em que foi detectado 
