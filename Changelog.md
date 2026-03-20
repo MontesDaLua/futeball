@@ -43,4 +43,9 @@
     * report generator
 
 * 20260318-1
-  * opção de gerar um video em formato mp4 com frames analisadas 
+  * opção de gerar um video em formato mp4 com frames analisadas
+
+* 20260319-1
+  * split the config in 2 DISTINCT FILES \
+    * game data
+    * video processor parameters

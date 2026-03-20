@@ -1,0 +1,11 @@
+# Configurações Técnicas e de IA
+analysis:
+  model_size: "yolov8n"
+  min_confidence: 0.3
+  sample_rate: 0.1  # Processar a cada 0.1 segundos
+  device: "mps"     # 'cuda', 'cpu' ou 'mps'
+
+# Classes do YOLO
+target_classes:
+  person: 0
+  ball: 32

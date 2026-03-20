@@ -21,11 +21,8 @@
     * on time (starting in the video analysis beginning ) , not in samples
 
 
-    
+
 # config
-  * split the config in 2 parts
-    * game data
-    * video processor parameters
   * include in game configuration
     * date
     * players
@@ -36,3 +33,4 @@
 # video analysis
   * include ball position
   * include referee position
+  * include messages with start/end and duration of the video analysis

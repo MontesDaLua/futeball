@@ -1,18 +1,18 @@
+# Informação da Partida
 match_info:
-  match_id: "2026_SINT-ELV
-  teams: "Sintrense vs ELvas"
-  stadium: "Estádio do Sintrense"
+  match_id: "LIGA3-2026-001"
+  teams: "Sintrense vs Elvas"
+  stadium: "Estádio Sintrense "
+  date: "2026-03-19"
 
+# Dimensões do Campo (em metros)
 pitch:
-  length: 105.0
-  width: 68.0
+  length: 105
+  width: 68
 
-analysis:
-  sample_rate: 0.2 # % frames do analyse
-  min_confidence: 0.35
-  model_size: "yolov8n"
-
+# Identificação (Mapeamento de IDs do Tracker para Nomes)
 squad:
-  "1": "Otamendi"
-  "2": "Di Maria"
-  "3": "Kokcu"
+  "1": "João Silva (GR)"
+  "5": "Carlos Santos"
+  "10": "Ricardo Quaresma"
+  "referee": "99"  # ID que o tracker atribuiu ao árbitro
