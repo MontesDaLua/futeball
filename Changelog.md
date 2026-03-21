@@ -86,3 +86,7 @@
         - deve ser possivel adicionar um id a um jogador ja identificado
         - em vez de carregar todos os nao identificados deve carregar em grupos de 50
         - term interface para ir para o proximo ou o anterior grupo de 50
+* 20260320-1
+  - organiza o nomes do ficheiros da galeria pela cor da camisola dos jogadores 
+* 20260320-1
+  - atribuir a um id um jogador da identificado

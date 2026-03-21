@@ -1,107 +1,150 @@
 """
-Class ReportGenerator
+Módulo ReportGenerator: Responsável por processar os dados brutos de tracking,
+calcular estatísticas de performance e gerar um relatório PDF com gráficos.
 """
 import os
-import shutil
+import numpy as np
 import matplotlib.pyplot as plt
-from fpdf import FPDF
+from matplotlib.backends.backend_pdf import PdfPages
+from datetime import datetime
 
 class ReportGenerator:
     """
-    Report Generator com gestão de ficheiros temporários
+    Gera relatórios estatísticos baseados nos dados de movimento dos jogadores.
     """
-    def __init__(self, player_data, squad_map, match_info):
+    def __init__(self, player_data, squad_map, match_info=None):
         """
-        Constructor
+        Args:
+            player_data (dict): Dados vindos do JSON (posições e velocidades).
+            squad_map (dict): Mapeamento de ID para Nome Real (vindo do YAML).
+            match_info (dict): Metadados do jogo (data, equipas, etc).
         """
-        self.data = player_data
-        self.squad = squad_map
-        self.info = match_info
-        # Define o nome da pasta temporária
-        self.temp_dir = "temp_plots"
+        self.player_data = player_data
+        self.squad_map = squad_map
+        self.match_info = match_info or {}
+        self.output_dir = "temp_plots"
+        if not os.path.exists(self.output_dir):
+            os.makedirs(self.output_dir)
 
-    def create_speed_plot(self, player_id, output_path):
-        """
-        Gera o gráfico de velocidade para um atleta específico.
-        """
-        p_id_str = str(player_id)
+    def _get_player_name(self, p_id):
+        """Retorna o nome real ou 'ID X' se não identificado."""
+        return self.squad_map.get(str(p_id), f"Jogador {p_id}")
 
-        # Verifica se o ID existe e se tem dados de velocidade
-        if p_id_str not in self.data or not self.data[p_id_str].get("speeds"):
-            return False
+    def calculate_metrics(self, p_id):
+        """Calcula métricas resumo para um jogador específico."""
+        data = self.player_data.get(str(p_id), {})
+        speeds = data.get("speeds", [])
+        positions = np.array(data.get("positions", []))
 
-        speeds = self.data[p_id_str]["speeds"]
+        if not speeds:
+            return None
 
-        plt.figure(figsize=(10, 4))
-        plt.plot(speeds, color='#007AFF', linewidth=2)
+        # Cálculo de distância total (soma das distâncias entre posições consecutivas)
+        dist_total = 0
+        if len(positions) > 1:
+            diffs = np.diff(positions, axis=0)
+            dist_total = np.sum(np.sqrt(np.sum(diffs**2, axis=1)))
 
-        player_name = self.squad.get(p_id_str, f"Jogador {p_id_str}")
-        plt.title(f"Perfil de Intensidade - {player_name}")
-        plt.ylabel("Velocidade (km/h)")
-        plt.xlabel("Amostras (Frames)")
-        plt.grid(True, alpha=0.3, linestyle='--')
+        metrics = {
+            "avg_speed": np.mean(speeds),
+            "max_speed": np.max(speeds),
+            "distance": dist_total,
+            "sprints": len([s for s in speeds if s > 25.2]) # Sprints > 25.2 km/h
+        }
+        return metrics
 
-        # Garante que a pasta existe antes de salvar
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    def create_speed_plot(self, p_id, name):
+        """Gera um gráfico de linha da velocidade ao longo do tempo."""
+        speeds = self.player_data[str(p_id)]["speeds"]
+        plt.figure(figsize=(8, 4))
+        plt.plot(speeds, color='blue', linewidth=1, label='Velocidade (km/h)')
+        plt.axhline(y=np.mean(speeds), color='red', linestyle='--', label='Média')
+        plt.title(f"Perfil de Velocidade: {name}")
+        plt.xlabel("Amostras de Tempo")
+        plt.ylabel("Km/h")
+        plt.legend()
+        plt.grid(True, alpha=0.3)
 
-        plt.savefig(output_path, bbox_inches='tight')
-        plt.close() # Liberta memória do Matplotlib
-        return True
+        plot_path = os.path.join(self.output_dir, f"speed_{p_id}.png")
+        plt.savefig(plot_path)
+        plt.close()
+        return plot_path
+
+    def create_heatmap(self, p_id, name):
+        """Gera um mapa de calor (Heatmap) da posição do jogador no campo."""
+        positions = np.array(self.player_data[str(p_id)]["positions"])
+        if len(positions) == 0: return None
+
+        plt.figure(figsize=(10, 6))
+        # Simulando o campo (105x68)
+        plt.hexbin(positions[:, 0], positions[:, 1], gridsize=20, cmap='YlOrRd', extent=[0, 105, 0, 68])
+        plt.colorbar(label='Densidade de Presença')
+        plt.title(f"Mapa de Calor: {name}")
+        plt.xlim(0, 105)
+        plt.ylim(0, 68)
+
+        # Desenho simplificado das linhas de campo
+        plt.plot([0, 105, 105, 0, 0], [0, 0, 68, 68, 0], color="black") # Linhas laterais
+        plt.plot([52.5, 52.5], [0, 68], color="black") # Meio campo
+
+        plot_path = os.path.join(self.output_dir, f"heat_{p_id}.png")
+        plt.savefig(plot_path)
+        plt.close()
+        return plot_path
 
     def generate_pdf(self, output_filename):
-        """
-        Gera o PDF final e limpa a diretoria temporária.
-        """
-        # 1. Criar pasta temporária se não existir
-        if not os.path.exists(self.temp_dir):
-            os.makedirs(self.temp_dir)
+        """Compila todas as métricas e gráficos num ficheiro PDF único."""
+        with PdfPages(output_filename) as pdf:
+            # Página de Rosto
+            plt.figure(figsize=(8.5, 11))
+            plt.text(0.5, 0.9, "RELATÓRIO DE DESEMPENHO TÁTICO", fontsize=20, ha='center', weight='bold')
+            plt.text(0.5, 0.85, f"Data do Processamento: {datetime.now().strftime('%d/%m/%Y %H:%M')}", ha='center')
+            plt.text(0.5, 0.7, f"Jogo: {self.match_info.get('teams', 'N/A')}", fontsize=14, ha='center')
+            plt.axis('off')
+            pdf.savefig()
+            plt.close()
 
-        pdf = FPDF()
-        pdf.add_page()
+            # Processar cada jogador identificado no JSON
+            for p_id in self.player_data.keys():
+                name = self._get_player_name(p_id)
+                metrics = self.calculate_metrics(p_id)
 
-        # Cabeçalho
-        pdf.set_font("Arial", 'B', 16)
-        pdf.cell(0, 10, f"Relatório de Performance: {self.info['teams']}", ln=True, align='C')
-        pdf.set_font("Arial", '', 12)
-        pdf.cell(0, 10, f"Estádio: {self.info['stadium']} | ID: {self.info['match_id']}", ln=True)
+                if not metrics: continue
 
-        try:
-            for p_id, metrics in self.data.items():
-                p_id_str = str(p_id)
-                name = self.squad.get(p_id_str, f"Jogador {p_id_str}")
-                speeds = metrics.get("speeds", [])
+                # Página do Jogador
+                fig = plt.figure(figsize=(8.5, 11))
+                plt.suptitle(f"Análise Individual: {name} (ID {p_id})", fontsize=16, weight='bold')
 
-                v_max = max(speeds) if speeds else 0
-                v_med = sum(speeds) / len(speeds) if speeds else 0
-                sprints = len([s for s in speeds if s > 25.2])
+                # Texto de Métricas
+                info_text = (
+                    f"Distância Total: {metrics['distance']:.2f} metros\n"
+                    f"Velocidade Média: {metrics['avg_speed']:.2f} km/h\n"
+                    f"Velocidade Máxima: {metrics['max_speed']:.2f} km/h\n"
+                    f"Número de Sprints: {metrics['sprints']}"
+                )
+                plt.figtext(0.15, 0.8, info_text, fontsize=12, bbox={'facecolor': 'orange', 'alpha': 0.1, 'pad': 10})
 
-                # Layout do Atleta
-                pdf.ln(10)
-                pdf.set_font("Arial", 'B', 12)
-                pdf.cell(0, 10, f"Atleta: {name}", ln=True)
+                # Adicionar Gráfico de Velocidade
+                speed_img = self.create_speed_plot(p_id, name)
+                ax_speed = fig.add_axes([0.1, 0.45, 0.8, 0.3])
+                img_s = plt.imread(speed_img)
+                ax_speed.imshow(img_s)
+                ax_speed.axis('off')
 
-                pdf.set_font("Arial", '', 10)
-                pdf.cell(0, 7, f"Velocidade Máxima: {v_max:.2f} km/h", ln=True)
-                pdf.cell(0, 7, f"Velocidade Média: {v_med:.2f} km/h", ln=True)
-                pdf.cell(0, 7, f"Sprints (>25.2 km/h): {sprints}", ln=True)
+                # Adicionar Heatmap
+                heat_img = self.create_heatmap(p_id, name)
+                if heat_img:
+                    ax_heat = fig.add_axes([0.1, 0.05, 0.8, 0.35])
+                    img_h = plt.imread(heat_img)
+                    ax_heat.imshow(img_h)
+                    ax_heat.axis('off')
 
-                # Gerar imagem na pasta temporária
-                img_name = f"speed_plot_{p_id_str}.png"
-                img_path = os.path.join(self.temp_dir, img_name)
+                pdf.savefig()
+                plt.close()
 
-                if self.create_speed_plot(p_id_str, img_path):
-                    # Insere imagem no PDF
-                    pdf.image(img_path, x=15, w=170)
-                else:
-                    pdf.set_font("Arial", 'I', 8)
-                    pdf.cell(0, 5, "Gráfico indisponível (dados insuficientes)", ln=True)
+        # Limpeza de ficheiros temporários
+        for f in os.listdir(self.output_dir):
+            os.remove(os.path.join(self.output_dir, f))
+        os.rmdir(self.output_dir)
 
-            # Salvar o PDF
-            pdf.output(output_filename)
-            print(f"✅ Relatório guardado com sucesso: {output_filename}")
-
-        finally:
-            # 2. Limpeza total da pasta temporária após o processamento
-            if os.path.exists(self.temp_dir):
-                shutil.rmtree(self.temp_dir)
-                print(f"🧹 Pasta temporária '{self.temp_dir}' removida.")
+        print(f"✅ Relatório PDF gerado com sucesso: {output_filename}")

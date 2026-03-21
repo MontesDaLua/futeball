@@ -7,8 +7,12 @@ pitch:
   length: 105
   width: 68
 squad:
-  '9999999999999': 'jogador fantasma'
+  '9999999999999': jogador fantasma
+  referee_id: 427
+  '42': azul1
 same_as:
-  '9999999999999': [999999999999999]
+  '9999999999999':
+  - 999999999999999
 ignore_ids:
-  - "9999999999999" #Jogador fantasma
+- '9999999999999'
+processing_version: 2

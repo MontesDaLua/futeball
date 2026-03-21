@@ -52,14 +52,11 @@ date
 ```bash
 source ./venv/bin/activate
 export game_name=SINT-ALV
-
 export video_path=data/samples/game1/video/20260215/${game_name}-min1.mp4
 export config_path=data/samples/game1/config/20260215/${game_name}.yml
 export data_path=data/samples/game1/analisys/20260215/${game_name}-data.json
-
 export proc_config_file=data/frame_analysis/simple.yml
 export data_config_file=data/samples/game1/config/20260215/SINT-ALV.yml
-
 export video_save_dir=tmp
 export gallery_dir=tmp/lixo
 
