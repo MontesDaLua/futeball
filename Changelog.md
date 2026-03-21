@@ -87,6 +87,22 @@
         - em vez de carregar todos os nao identificados deve carregar em grupos de 50
         - term interface para ir para o proximo ou o anterior grupo de 50
 * 20260320-1
-  - organiza o nomes do ficheiros da galeria pela cor da camisola dos jogadores 
+  - organiza o nomes do ficheiros da galeria pela cor da camisola dos jogadores
 * 20260320-1
-  - atribuir a um id um jogador da identificado
+  - atribuir a um id um jogador ja identificado
+
+
+
+  - app
+    - ter uma lista inicial de jogadores no yaml e só poder atribuir um id não identificado a 1 jogador dessa lista
+  - video analysis
+    - ter um relatorio final com
+      * Numero de frames Totais
+      * Numero de frames analisdas
+      * timestampo inicio da analise
+      * timestampo fim da analise
+      * duração da analise
+      * numero de analises por segundo
+      * fim lista
+        * os jogadores identificados
+        * os jogadores nao identificados
