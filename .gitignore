@@ -3,4 +3,12 @@ tmp/
 __pycache__/
 data/samples/
 session_data.json
+# YOLO models
 yolov8n.pt
+yolov8n.onnx
+yolo11n.onnx
+yolo11n.pt
+yolo26n.onnx
+yolo26n.pt
+yolo26s.onnx
+yolo26s.pt

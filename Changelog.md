@@ -93,8 +93,12 @@
 
 
 
+* 20260320-2
   - app
     - ter uma lista inicial de jogadores no yaml e só poder atribuir um id não identificado a 1 jogador dessa lista
+    - na app ter uma lista na aba esquerda com os nomes dos jogadores identificados
+    - na app poder identificar um id a um jogador ja identificado
+
   - video analysis
     - ter um relatorio final com
       * Numero de frames Totais
@@ -106,3 +110,6 @@
       * fim lista
         * os jogadores identificados
         * os jogadores nao identificados
+
+    - environment
+      - some tests for windows 

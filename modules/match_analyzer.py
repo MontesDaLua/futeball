@@ -29,13 +29,22 @@ class MatchAnalyzer:
         self.analyst = FieldAnalyst(pitch.get('length', 105), pitch.get('width', 68))
 
         analysis_cfg = self.proc_config.get('analysis', {})
+        # debug
+        model_size=analysis_cfg.get('model_size', 'yolov8n'),
+        min_confidence=analysis_cfg.get('min_confidence', 0.3),
+        device=analysis_cfg.get('device', 'cpu')
+        self.sample_rate = analysis_cfg.get('sample_rate', 0.1)
+        print (f"runing with model {model_size}")
+        print (f"runing with confidence {min_confidence}")
+        print (f"runing with device {device}")
+        print (f"runing with sampl rate {self.sample_rate}")
+
         self.tracker = PlayerTracker(
-            model_size=analysis_cfg.get('model_size', 'yolov8n'),
-            min_confidence=analysis_cfg.get('min_confidence', 0.3),
-            device=analysis_cfg.get('device', 'cpu')
+            model_size=model_size,
+            min_confidence=min_confidence,
+            device=device
         )
 
-        self.sample_rate = analysis_cfg.get('sample_rate', 0.1)
         self.extracted_ids = set()
         self.ignore_ids = [str(i) for i in self.game_data.get('ignore_ids', [])]
         self.squad = self.game_data.get('squad', {})

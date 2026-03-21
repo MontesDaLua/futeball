@@ -1,3 +1,4 @@
+# linux
 pylint
 ultralytics
 opencv-python
@@ -9,3 +10,19 @@ tqdm
 pandas
 streamlit
 Pillow
+
+# Windows
+# from linux instalation
+#   pip uninstall onnxruntime torch torchvision
+pylint
+ultralytics
+opencv-python
+pyyaml
+matplotlib
+numpy
+fpdf2
+tqdm
+pandas
+streamlit
+Pillow
+onnxruntime-directml
