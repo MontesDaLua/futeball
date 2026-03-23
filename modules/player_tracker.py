@@ -8,7 +8,7 @@ import numpy as np
 class PlayerTracker:
     def __init__(self, model_size, min_confidence, device='cpu'):
         #self.model = YOLO(f"{model_size}.pt")
-        self.model = YOLO({model_size})
+        self.model = YOLO(model_size)
         self.min_confidence = min_confidence
         self.device = device
         self.player_data = {} # {id: {"positions": [], "speeds": []}}

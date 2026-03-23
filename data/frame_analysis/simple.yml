@@ -1,13 +1,10 @@
 # Configurações Técnicas e de IA
 analysis:
-  # yolov8n.pt
-  # yolov8n.onnx
-  # yolo11n.onnx
-  # yolo11n.pt
-  # yolo26n.onnx
-  # yolo26n.pt
-  # yolo26s.onnx
-  # yolo26s.pt
+  #yolov8l.pt
+  #yolov8m.pt
+  #yolov8n.pt
+  #yolov8s.pt
+  #yolov8x.pt
   model_size: "yolov8n.pt" # one of the above
   min_confidence: 0.3
   sample_rate: 0.1  # Processar a cada 0.1 segundos

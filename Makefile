@@ -11,11 +11,12 @@ MAIN_SCRIPT := main.py
 # Create Virtual Environment
 venv:
 	@echo "Creating virtual environment..."
-	python3 -m venv $(VENV)
+	python -m venv $(ENV)
 
 # Install Dependencies
 install: venv
 	@echo "Installing packages from requirements.txt..."
+	source ./venv/bin/activate
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
 

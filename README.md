@@ -5,6 +5,12 @@ git
 # Install
 ```bash
   make install
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt -o yolov8n.pt
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s.pt -o yolov8s.pt
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m.pt -o yolov8m.pt
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l.pt -o yolov8l.pt
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x.pt -o yolov8x.pt
+
 ```
 
 ## youtube downloader
@@ -15,10 +21,7 @@ https://github.com/yt-dlp/yt-dlp/wiki/Installation
 
 ```bash
  source venv/bin/activate
- sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
- sudo chmod a+rx /usr/local/bin/yt-dlp  # Make executable
- yt-dlp "https://www.youtube.com/watch?v=2fB6zH1_cBo"
- mv SU\ Sintrense\ x\ FC\ Alverca\ ｜\ DIRETO\ \[2fB6zH1_cBo\].mp4 data/samples/game1/video/SINT-ALV.mp4
+ yt-dlp "https://www.youtube.com/watch?v=2fB6zH1_cBo" --output data/samples/game1/video/SINT-ALV-full.mp4
  # start game in video 9'15''
 ```
 
@@ -27,14 +30,14 @@ https://github.com/yt-dlp/yt-dlp/wiki/Installation
 
 ## make samples
 ```bash
-ffmpeg -i  data/samples/game1/video/20260215/SINT-ALV-full.mp4  \
+ffmpeg -i data/samples/game1/video/SINT-ALV-full.mp4.webm \
        -ss 00:09:14 \
        -t 00:01:00 \
-       -c copy  data/samples/game1/video/20260215/SINT-ALV-min1.mp4
-ffmpeg -i  data/samples/game1/video/20260215/SINT-ALV-full.mp4  \
+       -c copy  data/samples/game1/video/SINT-ALV-min1.mp4
+ffmpeg -i data/samples/game1/video/SINT-ALV-full.mp4.webm \
        -ss 00:09:14 \
        -t 00:05:00 \
-       -c copy  data/samples/game1/video/20260215/SINT-ALV-min5.mp4
+       -c copy  data/samples/game1/video/SINT-ALV-min5.mp4
 ```
 
 ## Teste com separacao scripts
@@ -42,13 +45,13 @@ ffmpeg -i  data/samples/game1/video/20260215/SINT-ALV-full.mp4  \
 ```bash
 source ./venv/bin/activate
 export game_name=SINT-ALV
-export video_path=data/samples/game1/video/20260215/${game_name}-min1.mp4
-export config_path=data/samples/game1/config/20260215/${game_name}.yml
-export data_path=data/samples/game1/analisys/20260215/${game_name}-data.json
+export video_path=data/samples/game1/video/${game_name}-min1.mp4
+export config_path=data/samples/game1/game_analysis/${game_name}.yml
+export data_path=data/samples/game1/game_analysis/${game_name}-data.json
 export proc_config_file=data/frame_analysis/simple.yml
-export data_config_file=data/samples/game1/config/20260215/SINT-ALV.yml
-export video_save_dir=tmp
-export gallery_dir=tmp/lixo
+export data_config_file=data/samples/game1/game_analysis/SINT-ALV.yml
+export video_save_dir=data/samples/game1/game_analysis/
+export gallery_dir=data/samples/game1/game_analysis/gallery
 
 date
 python run_video_processing.py \
