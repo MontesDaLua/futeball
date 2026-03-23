@@ -5,11 +5,13 @@ git
 # Install
 ```bash
   make install
-  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt -o yolov8n.pt
-  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s.pt -o yolov8s.pt
-  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m.pt -o yolov8m.pt
-  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l.pt -o yolov8l.pt
-  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x.pt -o yolov8x.pt
+  export YOLO_DIR=yolo_dir
+  mkdir ${YOLO_DIR}
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt -o ${YOLO_DIR}/yolov8n.pt
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s.pt -o ${YOLO_DIR}/yolov8s.pt
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m.pt -o ${YOLO_DIR}/yolov8m.pt
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l.pt -o ${YOLO_DIR}/yolov8l.pt
+  curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x.pt -o ${YOLO_DIR}/yolov8x.pt
 
 ```
 
