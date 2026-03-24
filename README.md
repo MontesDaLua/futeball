@@ -6,13 +6,26 @@ git
 ```bash
   make install
   export YOLO_DIR=yolo_dir
-  mkdir ${YOLO_DIR}
+  # V8
   curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8n.pt -o ${YOLO_DIR}/yolov8n.pt
   curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8s.pt -o ${YOLO_DIR}/yolov8s.pt
   curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8m.pt -o ${YOLO_DIR}/yolov8m.pt
   curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8l.pt -o ${YOLO_DIR}/yolov8l.pt
   curl -L https://github.com/ultralytics/assets/releases/download/v8.2.0/yolov8x.pt -o ${YOLO_DIR}/yolov8x.pt
 
+  # V10
+  curl -L -O https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov10n.pt -o ${YOLO_DIR}/yolov10n.pt
+  curl -L -O https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov10s.pt -o ${YOLO_DIR}/yolov10s.pt
+  curl -L -O https://github.com/ultralytics/assets/releases/download/v8.3.0/yolov10m.pt -o ${YOLO_DIR}/yolov10m.pt
+  curl -L -O https://github.com/Log-0/yolov10-models/releases/download/v1.1/yolov10l.pt -o ${YOLO_DIR}/yolov10l.pt
+
+  # V11
+  # Nano, Small, Medium, Large, X
+  curl -L -O https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11n.pt -o ${YOLO_DIR}/yolov11n.pt
+  curl -L -O https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11s.pt -o ${YOLO_DIR}/yolov11s.pt
+  curl -L -O https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11m.pt -o ${YOLO_DIR}/yolov11m.pt
+  curl -L -O https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11l.pt -o ${YOLO_DIR}/yolov11l.pt
+  curl -L -O https://github.com/ultralytics/assets/releases/download/v8.3.0/yolo11x.pt -o ${YOLO_DIR}/yolov11x.pt
 ```
 
 ## youtube downloader

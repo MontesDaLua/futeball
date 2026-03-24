@@ -8,22 +8,49 @@ analysis:
     #   sample rate 0.1
     #   min_confidence: 0.3
     # models
-      #yolov8n.pt
+      #yolo_dir/yolov8n.pt
         # 55 its/sec
         # data points: 5702
-      #yolov8s.pt
+      #yolo_dir/yolov8s.pt
         # 46 its/sec
         # data points: 7317
-      #yolov8m.pt 40
+      #yolo_dir/yolov8m.pt 40
         # its/sec
         # data points: 8441
-      #yolov8l.pt
+      #yolo_dir/yolov8l.pt
         # 32 its/sec
         # data points: 7836
-      #yolov8x.pt
+      #yolo_dir/yolov8x.pt
         # 27 its/sec
         # data points: 8895
-  model_size: "yolo_dir/yolov8n.pt" # one of the above
+      # yolo_dir/yolov10n.pt
+        # 60 its/sec
+        # data points:  4820
+      # yolo_dir/yolov10s.pt
+        # 52 its/sec
+        # data points:  6098
+      # yolo_dir/yolov10m.pt
+        # 4626 its/sec
+        # data points:  6572
+      # yolo_dir/yolov10l.pt
+        # XX its/sec
+        # data points:  XX
+      # yolo_dir/yolov11n.pt
+        # XX its/sec
+        # data points:  XX
+      # yolo_dir/yolov11s.pt
+        # XX its/sec
+        # data points:  XX
+      # yolo_dir/yolov11m.pt
+        # XX its/sec
+        # data points:  XX
+      # yolo_dir/yolov11l.pt
+        # XX its/sec
+        # data points:  XX
+      # yolo_dir/yolov11x.pt
+        # XX its/sec
+        # data points:  XX
+  model_size: "yolo_dir/yolo11x.pt" # one of the above
   min_confidence: 0.3
   sample_rate: 0.1  # Processar a cada 0.1 segundos
   device: "mps"     # 'cuda', 'cpu' ou 'mps'

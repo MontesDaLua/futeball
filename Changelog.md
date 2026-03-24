@@ -112,4 +112,17 @@
         * os jogadores nao identificados
 
     - environment
-      - some tests for windows 
+      - some tests for windows
+
+* 20260323-1
+  - video analysis
+      - ajustar timmings
+        - Precisão Cirúrgica
+        - Consistência de Unidades: Todas as distâncias são tratadas em metros (via FieldAnalyst) e tempos em segundos, resultando sempre em km/h reais.
+        - Flexibilidade: O sample_rate (ex: 0.5 para duas análises por segundo) passa a ser a única métrica de tempo que importa para o cálculo de velocidade.
+
+
+* 20260324-1
+      - como fazer download de todos os modelos da versao 8, 10 e 11   do YOLO  com curl 
+
+      - porque o 30 FPS hardcoded
