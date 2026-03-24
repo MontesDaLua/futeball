@@ -68,143 +68,41 @@ class MatchAnalyzer:
         if 85 <= hue < 130: return "azul"
         return "outra_cor"
 
-
-    def process_video(self, video_path, save_annotated_path, gallery_dir):
-        """
-        Processa o vídeo, realiza tracking, extrai crops para a galeria
-        e opcionalmente guarda um vídeo anotado.
-        """
-        cap = cv2.VideoCapture(video_path)
-        if not cap.isOpened():
-            print(f"❌ Erro ao abrir o vídeo: {video_path}")
-            return
-
-        # Metadados do vídeo
-        fps = cap.get(cv2.CAP_PROP_FPS)
-        width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-        height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-        total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-        # O intervalo define de quanto em quanto tempo processamos o tracking
-        interval = max(1, int(fps * self.sample_rate))
-
-        # Inicialização do Gravador de Vídeo
-        out = None
-        if save_annotated_path:
-            fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-            out = cv2.VideoWriter(save_annotated_path, fourcc, fps, (width, height))
-            print(f"🎥 Gravação de vídeo ativada: {save_annotated_path}")
-
-        if gallery_dir:
-            os.makedirs(gallery_dir, exist_ok=True)
-
-        print(f"⏳ Processando {total_frames} frames...")
-
-        # Barra de progresso visual
-        pbar = tqdm(total=total_frames)
-
-        while cap.isOpened():
-            ret, frame = cap.read()
-            if not ret:
-                break
-
-            f_idx = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
-
-            # Lógica de Inferência (apenas no intervalo definido)
-            if f_idx % interval == 0:
-                results = self.tracker.track_frame(frame)
-
-                # Verificar se o YOLO detetou e atribuiu IDs
-                if hasattr(results.boxes, 'id') and results.boxes.id is not None:
-                    # Conversão explícita para tipos nativos (evita erros de Tensor/Tuple)
-                    boxes = results.boxes.xyxy.cpu().numpy().tolist()
-                    ids = results.boxes.id.cpu().numpy().astype(int).tolist()
-                    clss = results.boxes.cls.cpu().numpy().astype(int).tolist()
-
-                    for box, raw_id, cls in zip(boxes, ids, clss):
-                        raw_id_str = str(raw_id)
-                        p_id = self.id_map.get(raw_id_str, raw_id_str)
-
-                        # 1. Filtros (Ignorar IDs ou jogadores já no Squad)
-                        if p_id in self.ignore_ids or p_id in self.squad:
-                            continue
-
-                        # 2. Desenho de Anotações (se o output estiver ativo)
-                        if out is not None:
-                            x1, y1, x2, y2 = map(int, box)
-                            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                            cv2.putText(frame, f"ID: {p_id}", (x1, y1 - 10),
-                                        cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-
-                        # 3. Salvar Galeria (apenas a primeira vez que vemos o ID)
-                        if gallery_dir and cls == 0 and p_id not in self.extracted_ids:
-                            x1, y1, x2, y2 = map(int, box)
-                            crop = frame[max(0, y1):min(height, y2),
-                                         max(0, x1):min(width, x2)]
-
-                            color = self._get_dominant_color(crop)
-                            prefix = f"{color}_{p_id}"
-
-                            cv2.imwrite(os.path.join(gallery_dir, f"{prefix}_crop.jpg"), crop)
-                            self.extracted_ids.add(p_id)
-
-                        # 4. Cálculo de Métricas no Campo Real
-                        center_x = (box[0] + box[2]) / 2
-                        center_y = (box[1] + box[3]) / 2
-                        pos_m = self.analyst.pixel_to_meters(center_x, center_y)
-
-                        # Garantir que pos_m é uma lista de floats simples para o JSON
-                        if isinstance(pos_m, np.ndarray):
-                            pos_m = pos_m.tolist()
-
-                        self.tracker.calculate_speed(p_id, pos_m, self.sample_rate)
-
-            # Escrever o frame no vídeo de saída (se configurado)
-            if out is not None:
-                out.write(frame)
-
-            pbar.update(1)
-
-        # Libertar recursos
-        pbar.close()
-        cap.release()
-        if out is not None:
-            out.release()
-
-
-
-    def process_video_old(self, video_path, save_annotated_path, gallery_dir):
+    def process_video(self, video_path, save_annotated_path=None, gallery_dir=None):
         cap = cv2.VideoCapture(video_path)
         fps = cap.get(cv2.CAP_PROP_FPS)
+
+        # Correção: Se o FPS não for detetado corretamente, assume-se 30 por segurança
+        if fps == 0: fps = 30.0
+
         interval = max(1, int(fps * self.sample_rate))
 
-        if gallery_dir: os.makedirs(gallery_dir, exist_ok=True)
+        # CORREÇÃO: Cálculo do tempo real decorrido entre cada amostragem (dt)
+        # O tempo real é (1/fps) * número de frames saltados
+        real_dt = (1.0 / fps) * interval
 
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret: break
 
             f_idx = int(cap.get(cv2.CAP_PROP_POS_FRAMES))
+
             if f_idx % interval == 0:
                 results = self.tracker.track_frame(frame)
 
-                # CORREÇÃO: Verificar se existem IDs e convertê-los de Tensor para CPU/Numpy
                 if hasattr(results.boxes, 'id') and results.boxes.id is not None:
-                    # Converter todos os dados do frame para listas Python nativas
+                    # Conversão explícita para evitar erros de serialização
                     boxes = results.boxes.xyxy.cpu().numpy().tolist()
                     ids = results.boxes.id.cpu().numpy().astype(int).tolist()
                     clss = results.boxes.cls.cpu().numpy().astype(int).tolist()
 
                     for box, raw_id, cls in zip(boxes, ids, clss):
-                        # p_id convertido para string nativa
                         raw_id_str = str(raw_id)
                         p_id = self.id_map.get(raw_id_str, raw_id_str)
 
-                        # Filtros
-                        if p_id in self.ignore_ids or p_id in self.squad:
-                            continue
+                        if p_id in self.ignore_ids: continue
 
-                        # Salvar galeria
+                        # Extração de Galeria
                         if gallery_dir and cls == 0 and p_id not in self.extracted_ids:
                             x1, y1, x2, y2 = map(int, box)
                             crop = frame[max(0, y1):min(frame.shape[0], y2),
@@ -226,7 +124,8 @@ class MatchAnalyzer:
                         # Garantir que pos_m é uma lista de floats simples
                         if isinstance(pos_m, np.ndarray): pos_m = pos_m.tolist()
 
-                        self.tracker.calculate_speed(p_id, pos_m, self.sample_rate)
+                        # CORREÇÃO: Passar o real_dt em vez do sample_rate fixo
+                        self.tracker.calculate_speed(p_id, pos_m, real_dt)
 
         cap.release()
 

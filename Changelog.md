@@ -123,6 +123,7 @@
 
 
 * 20260324-1
-      - como fazer download de todos os modelos da versao 8, 10 e 11   do YOLO  com curl 
+      - como fazer download de todos os modelos da versao 8, 10 e 11   do YOLO  com curl
 
-      - porque o 30 FPS hardcoded
+* 20260324-2
+      - porque o 30 FPS hardcoded; indica o codigo python corrigido total por ficheiro ; nunca elimines os comentarios ; nunca elimines metodos ; 

@@ -25,6 +25,9 @@ class PlayerTracker:
         return results[0]
 
     def calculate_speed(self, player_id, current_pos_m, dt):
+        """
+        Calcula a velocidade baseada na distância percorrida e no intervalo de tempo (dt).
+        """
         p_id = str(player_id)
         if p_id not in self.player_data:
             self.player_data[p_id] = {"positions": [], "speeds": []}
@@ -39,6 +42,9 @@ class PlayerTracker:
             prev_pos = data["positions"][-1]
             dist = np.sqrt((current_pos_m[0] - prev_pos[0])**2 +
                            (current_pos_m[1] - prev_pos[1])**2)
+
+            # CORREÇÃO: O cálculo agora utiliza o dt real passado pelo MatchAnalyzer
+            # Velocidade (m/s) * 3.6 = km/h
             speed_kmh = (dist / dt) * 3.6
             data["speeds"].append(float(speed_kmh)) # Float nativo
 

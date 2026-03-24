@@ -60,13 +60,21 @@ ffmpeg -i data/samples/game1/video/SINT-ALV-full.mp4.webm \
 ```bash
 source ./venv/bin/activate
 export game_name=SINT-ALV
+
+
+
 export video_path=data/samples/game1/video/${game_name}-min1.mp4
 export config_path=data/samples/game1/game_analysis/${game_name}.yml
-export data_path=data/samples/game1/game_analysis/${game_name}-data.json
+
+
 export proc_config_file=data/frame_analysis/simple.yml
-export data_config_file=data/samples/game1/game_analysis/SINT-ALV.yml
-export video_save_dir=data/samples/game1/game_analysis/
+
+export data_path=data/samples/game1/game_analysis/${game_name}-data.json
+export data_config_file=data/samples/game1/game_analysis/${game_name}.yml
 export gallery_dir=data/samples/game1/game_analysis/gallery
+
+export video_save_dir=data/samples/game1/game_analysis/
+export pdfname=${video_save_dir}/report-${game_name}.pdf
 
 date
 python run_video_processing.py \
@@ -83,16 +91,15 @@ streamlit run id_manager_app.py -- \
     --gallery ${gallery_dir}
 
 
-
-
+date
 python report_generator.py \
   --input ${data_path} \
   --config ${config_path}  \
-  --output tmp/${game_name}-Relatorio.pdf
+  --output ${pdfname}
 date
 ```
 
-### powershell
+### powershell (re test )
 ```powershell
 # 1. Ativar o ambiente virtual (Caminho padrão Windows)
 # Se a tua venv foi criada no wsl
