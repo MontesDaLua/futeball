@@ -92,7 +92,183 @@ class ReportGenerator:
         plt.close()
         return plot_path
 
-    def generate_pdf(self, output_filename):
+    def create_displacement_plot_old(self, p_id, name):
+        """
+        Gera o mapa de trajeto/deslocamento linear do jogador.
+        Usa as coordenadas reais [x, y] em metros para desenhar as linhas de movimento.
+        """
+        data = self.player_data.get(str(p_id))
+        if not data or not data['positions']:
+            return None
+
+        # Converter lista de posições para array numpy para facilitar a indexação
+        pos = np.array(data['positions'])
+        x = pos[:, 0]
+        y = pos[:, 1]
+
+        fig, ax = plt.subplots(figsize=(10, 7))
+
+        # Desenho das marcações do campo (assumindo padrão 105x68m)
+        # Borda externa
+        ax.plot([0, 105, 105, 0, 0], [0, 0, 68, 68, 0], color="green", linewidth=2)
+        # Linha de meio campo
+        ax.plot([52.5, 52.5], [0, 68], color="green", linestyle='--', alpha=0.5)
+
+        # Desenhar a linha de deslocamento (A trajetória propriamente dita)
+        ax.plot(x, y, color='blue', label='Trajeto Percorrido', linewidth=1, alpha=0.8)
+
+        # Marcar o ponto de Início (Verde) e o ponto de Fim (Vermelho)
+        if len(x) > 0:
+            # Ponto inicial
+            ax.scatter(x[0], y[0], color='lime', s=100, label='Início', edgecolors='black', zorder=5)
+            # Ponto final
+            ax.scatter(x[-1], y[-1], color='red', s=100, label='Fim', edgecolors='black', zorder=5)
+
+        # Configurações estéticas do gráfico
+        ax.set_title(f"Mapa de Deslocamento Real (Metros) - {name}")
+        ax.set_xlabel("Comprimento (m)")
+        ax.set_ylabel("Largura (m)")
+        ax.legend(loc='upper right')
+
+        # Garante que 1 metro no eixo X é igual a 1 metro no eixo Y (evita distorção do campo)
+        ax.set_aspect('equal')
+
+        # Inverter o eixo Y para que a origem (0,0) coincida com o topo esquerdo da câmara
+        ax.invert_yaxis()
+
+        # Guardar o gráfico temporariamente
+        path = os.path.join(self.output_dir, f"disp_{p_id}.png")
+        plt.savefig(path)
+        plt.close()
+        return path
+
+
+    def create_displacement_plot(self, p_id, name):
+        """
+        Gera o mapa de trajeto/deslocamento linear do jogador dentro de um campo.
+        Usa as coordenadas reais [x, y] em metros.
+        """
+        data = self.player_data.get(str(p_id))
+        if not data or not data['positions']:
+            return None
+
+        pos = np.array(data['positions'])
+        x = pos[:, 0]
+        y = pos[:, 1]
+
+        # Dimensões padrão FIFA (ajustar se o seu campo for diferente)
+        l_campo = 105.0
+        w_campo = 68.0
+
+        fig, ax = plt.subplots(figsize=(10, 7))
+
+        # --- DESENHO DO CAMPO (COORDENADAS REAIS EM METROS) ---
+        # 1. Relvado e Linhas de Fundo
+        ax.plot([0, l_campo, l_campo, 0, 0], [0, 0, w_campo, w_campo, 0], color="black", linewidth=2)
+
+        # 2. Linha de Meio Campo e Círculo Central
+        ax.plot([l_campo/2, l_campo/2], [0, w_campo], color="black", linewidth=2)
+        centro = plt.Circle((l_campo/2, w_campo/2), 9.15, color="black", fill=False, linewidth=2)
+        ax.add_artist(centro)
+
+        # 3. Áreas de Grande Penalidade (Esquerda e Direita)
+        # Área Grande (16.5m)
+        ax.plot([0, 16.5, 16.5, 0], [w_campo/2 - 20.15, w_campo/2 - 20.15, w_campo/2 + 20.15, w_campo/2 + 20.15], color="black", linewidth=2)
+        ax.plot([l_campo, l_campo - 16.5, l_campo - 16.5, l_campo], [w_campo/2 - 20.15, w_campo/2 - 20.15, w_campo/2 + 20.15, w_campo/2 + 20.15], color="black", linewidth=2)
+
+        # Pequena Área (5.5m)
+        ax.plot([0, 5.5, 5.5, 0], [w_campo/2 - 9.16, w_campo/2 - 9.16, w_campo/2 + 9.16, w_campo/2 + 9.16], color="black", linewidth=2)
+        ax.plot([l_campo, l_campo - 5.5, l_campo - 5.5, l_campo], [w_campo/2 - 9.16, w_campo/2 - 9.16, w_campo/2 + 9.16, w_campo/2 + 9.16], color="black", linewidth=2)
+
+        # --- DESENHO DA TRAJETÓRIA DO JOGADOR ---
+        ax.plot(x, y, color='blue', label='Trajeto', linewidth=1.5, alpha=0.8, zorder=4)
+
+        # Marcar Início (Verde) e Fim (Vermelho)
+        if len(x) > 0:
+            ax.scatter(x[0], y[0], color='lime', s=80, label='Início', edgecolors='black', zorder=5)
+            ax.scatter(x[-1], y[-1], color='red', s=80, label='Fim', edgecolors='black', zorder=5)
+
+        # Configurações do Gráfico
+        ax.set_title(f"Mapa de Deslocamento Tático - {name}")
+        ax.set_xlim(-5, l_campo + 5)
+        ax.set_ylim(-5, w_campo + 5)
+        ax.set_aspect('equal')
+        ax.invert_yaxis() # Mantém a orientação da câmara (0,0 no topo)
+        ax.axis('off') # Remove os eixos numéricos para parecer um relatório tático
+
+        path = os.path.join(self.output_dir, f"disp_{p_id}.png")
+        plt.savefig(path, bbox_inches='tight', pad_inches=0.1)
+        plt.close()
+        return path
+
+
+
+    def generate_pdf(self, output_pdf_path):
+        """
+        Compila todas as métricas e gráficos (Velocidade, Heatmap e Deslocamento)
+        num relatório PDF final, com uma página por jogador.
+        """
+        with PdfPages(output_pdf_path) as pdf:
+            # Iterar por cada jogador encontrado nos dados
+            for p_id in self.player_data.keys():
+                name = self._get_player_name(p_id)
+                metrics = self.calculate_metrics(p_id)
+
+                # Se não houver dados suficientes para calcular métricas, salta o jogador
+                if not metrics:
+                    continue
+
+                # Criar uma figura do tamanho de uma folha A4 (polegadas)
+                fig = plt.figure(figsize=(8.27, 11.69))
+                plt.clf()
+
+                # 1. Título do Relatório
+                plt.suptitle(f"Relatório de Performance: {name} (ID: {p_id})",
+                             fontsize=16, weight='bold', y=0.95)
+
+                # 2. Bloco de Texto com Métricas Resumo
+                info_text = (
+                    f"Distância Total Percorrida: {metrics['distance']:.2f} metros\n"
+                    f"Velocidade Média: {metrics['avg_speed']:.2f} km/h\n"
+                    f"Velocidade Máxima: {metrics['max_speed']:.2f} km/h\n"
+                    f"Número de Sprints (>20km/h): {metrics['sprints']}"
+                )
+                plt.figtext(0.15, 0.82, info_text, fontsize=11,
+                            bbox={'facecolor': 'orange', 'alpha': 0.1, 'pad': 10})
+
+                # 3. Adicionar Gráfico de Velocidade (Topo)
+                speed_img_path = self.create_speed_plot(p_id, name)
+                ax_speed = fig.add_axes([0.1, 0.58, 0.8, 0.22]) # [left, bottom, width, height]
+                img_s = plt.imread(speed_img_path)
+                ax_speed.imshow(img_s)
+                ax_speed.axis('off')
+                ax_speed.set_title("Evolução da Velocidade", fontsize=10, loc='left')
+
+                # 4. Adicionar Heatmap (Meio)
+                heat_img_path = self.create_heatmap(p_id, name)
+                if heat_img_path:
+                    ax_heat = fig.add_axes([0.1, 0.31, 0.8, 0.25])
+                    img_h = plt.imread(heat_img_path)
+                    ax_heat.imshow(img_h)
+                    ax_heat.axis('off')
+                    ax_heat.set_title("Mapa de Calor (Ocupação)", fontsize=10, loc='left')
+
+                # 5. Adicionar Mapa de Deslocamento (Fundo)
+                disp_img_path = self.create_displacement_plot(p_id, name)
+                if disp_img_path:
+                    ax_disp = fig.add_axes([0.1, 0.04, 0.8, 0.25])
+                    img_d = plt.imread(disp_img_path)
+                    ax_disp.imshow(img_d)
+                    ax_disp.axis('off')
+                    ax_disp.set_title("Trajetória Real de Deslocamento", fontsize=10, loc='left')
+
+                # Guardar a página atual no PDF
+                pdf.savefig(fig)
+                plt.close(fig)
+
+        print(f"📄 Relatório PDF consolidado gerado em: {output_pdf_path}")
+
+    def generate_pdf_old(self, output_filename):
         """Compila todas as métricas e gráficos num ficheiro PDF único."""
         with PdfPages(output_filename) as pdf:
             # Página de Rosto

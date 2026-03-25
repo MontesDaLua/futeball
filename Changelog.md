@@ -126,4 +126,10 @@
       - como fazer download de todos os modelos da versao 8, 10 e 11   do YOLO  com curl
 
 * 20260324-2
-      - porque o 30 FPS hardcoded; indica o codigo python corrigido total por ficheiro ; nunca elimines os comentarios ; nunca elimines metodos ; 
+      - porque o 30 FPS hardcoded; indica o codigo python corrigido total por ficheiro ; nunca elimines os comentarios ; nunca elimines metodos ;
+* 20260324-3
+  - create displacement map for each player
+  - o displacement map deve estar dentro do campo
+  - o create report deve indicar quantas frames foram analisadas , no numero total de frames e o numero de segundos analisados no relatorio
+  - utilitario de analise de estatisticas do json gerado
+  
